@@ -1,5 +1,5 @@
 #!/bin/bash
-# backup script
+# backup restore script
 
 if [[ -s "backup.config" ]]; then
   source "backup.config"
