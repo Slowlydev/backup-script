@@ -10,3 +10,4 @@ fi
 
 echo "info: target directory ${targetDirectory}"
 echo "info: backup directory ${backupDirectory}"
+echo "info: timestamp format ${timestampFormat}"
