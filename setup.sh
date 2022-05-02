@@ -6,9 +6,10 @@
 
 # replaces $1 with $2 in config file
 storeToConfig() {
-  sed -i bak -e "s|${1}|${2}|g" backup.config
+  sed -i '' "s/${1}/${2}/g" backup.config
 }
 
 # write directories to config file
-storeToConfig "replaceTargetDirectory" "/Your/Files/To/Backup"
-storeToConfig "replaceBackupDirectory" "/Your/backup/Directory"
+# TODO write function which replaces slash with backslash slash
+storeToConfig "replaceTargetDirectory" "\/Your\/Files\/To\/Backup"
+storeToConfig "replaceBackupDirectory" "\/Your\/backup\/Directory"
