@@ -4,11 +4,11 @@
 # TODO: ask user about backup target and storage location
 # your sophisticated code here
 
-# check if backup config already exists
-if [[ -s "backup.config" ]]; then
-  rm "backup.config"
-fi
+# replaces $1 with $2 in config file
+storeToConfig() {
+  sed -i bak -e "s|${1}|${2}|g" backup.config
+}
 
 # write directories to config file
-echo 'targetDirectory="/Your/Files/To/Backup"' >>"backup.config"
-echo 'backupDirectory="/Your/Backup/Directory"' >>"backup.config"
+storeToConfig "replaceTargetDirectory" "/Your/Files/To/Backup"
+storeToConfig "replaceBackupDirectory" "/Your/backup/Directory"

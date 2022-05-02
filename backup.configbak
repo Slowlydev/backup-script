@@ -1,0 +1,3 @@
+targetDirectory="/Your/Files/To/Backup"
+backupDirectory="replaceBackupDirectory"
+timestampFormat=$(date +"%Y-%m-%d--%H-%M-%S")
