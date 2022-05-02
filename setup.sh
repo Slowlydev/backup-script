@@ -20,7 +20,7 @@ fi
 
 # welcome message
 echo ""
-echo "Welcome to the backup Setup"
+echo "Welcome to the backup setup"
 echo ""
 
 # get and save directory for backups 
@@ -30,6 +30,6 @@ storeToConfig "backupDirectory" $backupDirectory
 
 # get and save direcotroy to backup
 echo "Please enter the directory u want to backup"
-read -p "Direcotry to backup: " targetDirectory
+read -p "Directory to backup: " targetDirectory
 storeToConfig "targetDirectory" $targetDirectory
 
