@@ -1,2 +1,5 @@
 # operating system
 .DS_Store
+
+# config
+backup.config
