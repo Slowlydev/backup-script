@@ -39,7 +39,7 @@ fifthFile="$(ls -1 | head -5 | tail -1)"
 function transferCheck {
   echo ""
   echo "Do you really wanna transfer the files"
-  read -p "yes/no: " $readAnswer
+  read -p "yes/no: " readAnswer
   if [[ $readAnswer -eq "yes" ]]; then
     echo "Transfering the directory"
     cd $backupDirectory
@@ -68,17 +68,19 @@ case $userFileName in
   ;;
 
 "2")
-  read -p "Please enter the file name: " $selfChosenFile
-  if [[ -s $selfChosenFileName ]]; then
+  cd $backupDirectory
+  read -p "Please enter the file name: " selfChosenFile
+  if [ -f $selfChosenFileName ]; then
     echo "The file $selfChosenFile exists"
     sleep 1
     transferCheck
     nice -n 19 tar -xf $selfChosenFile
     transferFile
   else 
-    echo "The file does not exists"
+    echo "The file $backupDirectory/$selfChosenFile does not exists"
     exit 1
   fi ;;
+
 *)
   echo "Sorry we did not find you number please enter a valid number between 1 and 2" ;;
 
