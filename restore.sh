@@ -25,7 +25,7 @@ echo ""
 ls -1 | head -5
 sleep 2
 echo ""
-echo "Do you wanna have the newest Backup(1) or write 2 to manually choose a file"
+echo "Do you wanna have the oldest Backup(1) or write 2 to manually choose a file"
 read -p "Your Number: " userFileName
 
 
@@ -34,8 +34,8 @@ secondFile="$(ls -1 | head -2 | tail -1)"
 thirdFile="$(ls -1 | head -3 | tail -1)"
 fourthFile="$(ls -1 | head -4 | tail -1)"
 fifthFile="$(ls -1 | head -5 | tail -1)"
-#transferDirectory="$(ls | grep -E '(^|\s)backup($|\s)')"
 
+#Before actually tranfering a file I am checking if the User is sure
 function transferCheck {
   echo ""
   echo "Do you really wanna transfer the files"
@@ -48,6 +48,7 @@ function transferCheck {
   fi
 }
 
+#Transfaring the file into the target Directory
 function transferFile {
   echo ""
   pwd
@@ -57,9 +58,10 @@ function transferFile {
   rm -r backup
 }
 
-#Case Statemeant that gonna choose the file to restore
+#Case Statemeant where the user can chose which file should be transfered
 case $userFileName in 
 
+#First case where you have the option to restore the newest version
 "1")
   echo $firstFile 
   transferCheck
@@ -67,6 +69,7 @@ case $userFileName in
   transferFile
   ;;
 
+#Second case if you want to choose manuall a file
 "2")
   cd $backupDirectory
   read -p "Please enter the file name: " selfChosenFile
@@ -79,7 +82,8 @@ case $userFileName in
   else 
     echo "The file $backupDirectory/$selfChosenFile does not exists"
     exit 1
-  fi ;;
+  fi 
+  ;;
 
 *)
   echo "Sorry we did not find you number please enter a valid number between 1 and 2" ;;
