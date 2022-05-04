@@ -40,10 +40,12 @@ function transferCheck {
   echo ""
   echo "Do you really wanna transfer the files"
   read -p "yes/no: " readAnswer
-  if [[ $readAnswer -eq "yes" ]]; then
+  if [[ $readAnswer == "yes" ]]; then
+    echo $readAnswer
     echo "Transfering the directory"
     cd $backupDirectory
   else 
+    echo "You declined the transfer. Have a good day (:"
     exit 1
   fi
 }
