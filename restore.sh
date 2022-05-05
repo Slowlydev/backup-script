@@ -8,85 +8,52 @@ else
   exit 1
 fi
 
-#Info about your backup directory's
+# check if target directory exists
+if [[ ! -d "${targetDirectory}" ]]; then
+  echo "fatal: target directory does not exists"
+  exit 1
+fi
 echo "info: target directory ${targetDirectory}"
+
+# check if backup directory exists
+if [[ ! -d "${backupDirectory}" ]]; then
+  echo "fatal: backup directory does not exists"
+  exit 1
+fi
 echo "info: backup directory ${backupDirectory}"
+
 echo "info: timestamp format ${timestampFormat}"
-echo ""
 
-#Going into backup directory
-echo "Hello User, let's check your 5 last backups"
-echo ""
-cd ${backupDirectory}
-echo ""
-echo "Your Backup files: "
-echo ""
-ls -1 | head -5
-sleep 2
-echo ""
-echo "Do you wanna have the oldest Backup(1) or write 2 to manually choose a file"
-read -p "Your Number: " userFileName
+# getting all backups avaiable from backup direcory
+backups=($(ls ${backupDirectory}))
 
-firstFile="$(ls -1 | head -1)"
-secondFile="$(ls -1 | head -2 | tail -1)"
-thirdFile="$(ls -1 | head -3 | tail -1)"
-fourthFile="$(ls -1 | head -4 | tail -1)"
-fifthFile="$(ls -1 | head -5 | tail -1)"
+# ask for backup to restore
+PS3="$(date +"%H:%M:%S") prompt: what backup do u want to restore? "
+select selectedBackup in "${backups[@]}"; do
+	echo "info: you selected: ${selectedBackup}"
+	break
+done
 
-#Before actually tranfering a file I am checking if the User is sure
-function transferCheck {
-  echo ""
-  echo "Do you really wanna transfer the files"
-  read -p "yes/no: " readAnswer
-  if [[ $readAnswer == "yes" ]]; then
-    echo $readAnswer
-    echo "Transfering the directory"
-    cd $backupDirectory
-  else
-    echo "You declined the transfer. Have a good day (:"
+# ask for confirmation to restore
+read -p "prompt: do u wannt to start the restore process (no point of return from here) y/n: " readConfirmation
+if [[ ${readConfirmation} =~ ^[Yy]$ ]]; then
+  pwd=$(pwd)
+  cd ${backupDirectory}
+
+  if [[ ! -s "${selectedBackup}" ]]; then
+    echo "fatal: no config file found"
     exit 1
   fi
-}
 
-#Transfaring the file into the target Directory
-function transferFile {
-  echo ""
-  pwd
-  echo backup
-  sleep 1
+  nice -n 19 tar -xf ${selectedBackup}
   cp -r backup $targetDirectory
   rm -r backup
-}
-
-#Case Statemeant where the user can chose which file should be transfered
-case $userFileName in
-
-#First case where you have the option to restore the newest version
-"1")
-  echo $firstFile
-  transferCheck
-  nice -n 19 tar -xf $firstFile
-  transferFile
-  ;;
-
-  #Second case if you want to choose manuall a file
-"2")
-  cd $backupDirectory
-  read -p "Please enter the file name: " selfChosenFile
-  if [ -f $selfChosenFileName ]; then
-    echo "The file $selfChosenFile exists"
-    sleep 1
-    transferCheck
-    nice -n 19 tar -xf $selfChosenFile
-    transferFile
-  else
-    echo "The file $backupDirectory/$selfChosenFile does not exists"
-    exit 1
-  fi
-  ;;
-
-*)
-  echo "Sorry we did not find you number please enter a valid number between 1 and 2"
-  ;;
-
-esac
+  
+  cd pwd
+  
+  echo "info: successfully restored your selected backup"
+  exit 0
+else 
+  echo "info: you declined the transfer. enjoy ur current data"
+  exit 1
+fi
