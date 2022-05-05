@@ -1,8 +1,6 @@
 #!/bin/bash
 # backup setup script
 
-# TODO: ask user about backup target and storage location
-# TODO: ask for backup cronjob
 # TODO: convert to arrays of folders to backup
 
 # sets key $1 with value $2 in config file
