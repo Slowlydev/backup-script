@@ -1,7 +1,7 @@
 #!/bin/bash
 # backup setup script
 
-#TODO: implement safty checks for direcorys
+#TODO: implement safety checks for directory
 
 # sets key $1 with value $2 in config file
 storeToConfig() {

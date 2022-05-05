@@ -13,14 +13,12 @@ if [[ ! -d "${targetDirectory}" ]]; then
   echo "fatal: target directory does not exists"
   exit 1
 fi
-# echo "debug: target directory ${targetDirectory}"
 
 # check if backup directory exists
 if [[ ! -d "${targetDirectory}" ]]; then
   echo "fatal: target directory does not exists"
   exit 1
 fi
-# echo "debug: backup directory ${backupDirectory}"
 
 targetDirectoryName=$(echo "${targetDirectory}" | sed 's:.*/::')
 
