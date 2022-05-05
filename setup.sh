@@ -1,7 +1,7 @@
 #!/bin/bash
 # backup setup script
 
-# TODO: convert to arrays of folders to backup
+#TODO: implement safety checks for directory
 
 # sets key $1 with value $2 in config file
 storeToConfig() {
@@ -9,13 +9,13 @@ storeToConfig() {
 }
 
 # store to crontab function
-StoreCrontab() {
+storeToCrontab() {
   crontab -l | {
     cat echo "${1}"
   } | crontab -
 }
 
-# check if backup file exsists
+# check if backup file exists
 if [[ -s "backup.config" ]]; then
   source "backup.config"
 else
@@ -29,21 +29,21 @@ echo "\n Welcome to the backup setup \n"
 # get and save directory for backups
 echo "Please enter the directory where u want to store your compressed backups"
 read -p "Backup directory: " backupDirectory
-storeToConfig "backupDirectory" $backupDirectory
+storeToConfig "backupDirectory" ${backupDirectory}
 
-# get and save direcotroy to backup
+# get and save directory to backup
 echo "Please enter the directory u want to backup"
 read -p "Directory to backup: " targetDirectory
-storeToConfig "targetDirectory" $targetDirectory
+storeToConfig "targetDirectory" ${targetDirectory}
 
 # Ask for cronjob setup
-read -p "Do u want to run your backups automatically daily with a cronjob? " cronjobAnswer
+read -p "prompt: would you like to run your backups automatically daily with a cronjob? " cronjobAnswer
 
 # Check for answer
 if [[ $cronjobAnswer =~ ^[Yy]$ ]]; then
-  echo "info: set scripts direcory"
-  # store direcory of scripts
+  echo "info: set scripts directory"
+  # store directory of scripts
   scriptsDirectory=$(pwd)
   echo "info: write daily backup to crontab"
-  StoreCrontab "0 0 * * * cd ${scriptsDirectory} && ./backup.sh"
+  To "0 0 * * * cd ${scriptsDirectory} && ./backup.sh"
 fi
