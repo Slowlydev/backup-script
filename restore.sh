@@ -1,4 +1,5 @@
 #!/bin/bash
+# backup restore script
 
 # backup restore script
 if [[ -s "backup.config" ]]; then
@@ -24,18 +25,18 @@ echo "info: backup directory ${backupDirectory}"
 
 echo "info: timestamp format ${timestampFormat}"
 
-# getting all backups avaiable from backup direcory
+# getting all backups available from backup directory
 backups=($(ls ${backupDirectory}))
 
 # ask for backup to restore
 PS3="$(date +"%H:%M:%S") prompt: what backup do u want to restore? "
 select selectedBackup in "${backups[@]}"; do
-	echo "info: you selected: ${selectedBackup}"
-	break
+  echo "info: you selected: ${selectedBackup}"
+  break
 done
 
 # ask for confirmation to restore
-read -p "prompt: do u wannt to start the restore process (no point of return from here) y/n: " readConfirmation
+read -p "prompt: do u want to start the restore process (no point of return from here) y/n: " readConfirmation
 if [[ ${readConfirmation} =~ ^[Yy]$ ]]; then
   pwd=$(pwd)
   cd ${backupDirectory}
@@ -48,12 +49,12 @@ if [[ ${readConfirmation} =~ ^[Yy]$ ]]; then
   nice -n 19 tar -xf ${selectedBackup}
   cp -r backup $targetDirectory
   rm -r backup
-  
-  cd pwd
-  
+
+  cd ${pwd}
+
   echo "info: successfully restored your selected backup"
   exit 0
-else 
+else
   echo "info: you declined the transfer. enjoy ur current data"
   exit 1
 fi
