@@ -2,7 +2,7 @@
 # backup setup script
 
 # TODO: ask user about backup target and storage location
-# TODO: ask for backup cronjob 
+# TODO: ask for backup cronjob
 # TODO: convert to arrays of folders to backup
 
 # sets key $1 with value $2 in config file
@@ -10,8 +10,11 @@ storeToConfig() {
   sed -i '' "s/\(${1} *= *\).*/\1${2//\//\\/}/" backup.config
 }
 
-storeToCrontab() {
-  crontab -l | { cat echo "${1}" } | crontab -
+# store to crontab function
+StoreCrontab() {
+  crontab -l | {
+    cat echo "${1}"
+  } | crontab -
 }
 
 # check if backup file exsists
@@ -25,7 +28,7 @@ fi
 # welcome message
 echo "\n Welcome to the backup setup \n"
 
-# get and save directory for backups 
+# get and save directory for backups
 echo "Please enter the directory where u want to store your compressed backups"
 read -p "Backup directory: " backupDirectory
 storeToConfig "backupDirectory" $backupDirectory
@@ -39,8 +42,7 @@ storeToConfig "targetDirectory" $targetDirectory
 read -p "Do u want to run your backups automatically daily with a cronjob? " cronjobAnswer
 
 # Check for answer
-if [[ $cronjobAnswer =~ ^[Yy]$ ]]
-then
+if [[ $cronjobAnswer =~ ^[Yy]$ ]]; then
   echo "info: set scripts direcory"
   # store direcory of scripts
   scriptsDirectory=$(pwd)

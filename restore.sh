@@ -14,7 +14,6 @@ echo "info: backup directory ${backupDirectory}"
 echo "info: timestamp format ${timestampFormat}"
 echo ""
 
-
 #Going into backup directory
 echo "Hello User, let's check your 5 last backups"
 echo ""
@@ -27,7 +26,6 @@ sleep 2
 echo ""
 echo "Do you wanna have the oldest Backup(1) or write 2 to manually choose a file"
 read -p "Your Number: " userFileName
-
 
 firstFile="$(ls -1 | head -1)"
 secondFile="$(ls -1 | head -2 | tail -1)"
@@ -44,7 +42,7 @@ function transferCheck {
     echo $readAnswer
     echo "Transfering the directory"
     cd $backupDirectory
-  else 
+  else
     echo "You declined the transfer. Have a good day (:"
     exit 1
   fi
@@ -61,17 +59,17 @@ function transferFile {
 }
 
 #Case Statemeant where the user can chose which file should be transfered
-case $userFileName in 
+case $userFileName in
 
 #First case where you have the option to restore the newest version
 "1")
-  echo $firstFile 
+  echo $firstFile
   transferCheck
   nice -n 19 tar -xf $firstFile
   transferFile
   ;;
 
-#Second case if you want to choose manuall a file
+  #Second case if you want to choose manuall a file
 "2")
   cd $backupDirectory
   read -p "Please enter the file name: " selfChosenFile
@@ -81,13 +79,14 @@ case $userFileName in
     transferCheck
     nice -n 19 tar -xf $selfChosenFile
     transferFile
-  else 
+  else
     echo "The file $backupDirectory/$selfChosenFile does not exists"
     exit 1
-  fi 
+  fi
   ;;
 
 *)
-  echo "Sorry we did not find you number please enter a valid number between 1 and 2" ;;
+  echo "Sorry we did not find you number please enter a valid number between 1 and 2"
+  ;;
 
 esac
