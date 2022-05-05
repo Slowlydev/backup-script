@@ -41,15 +41,15 @@ if [[ ${readConfirmation} =~ ^[Yy]$ ]]; then
   cd ${backupDirectory}
 
   if [[ ! -s "${selectedBackup}" ]]; then
-    echo "fatal: no config file found"
+    echo "fatal: backup not found"
     exit 1
   fi
 
   nice -n 19 tar -xf ${selectedBackup}
-  cp -r backup $targetDirectory
+  cp -r backup/* ${targetDirectory}
   rm -r backup
   
-  cd pwd
+  cd "${pwd}"
   
   echo "info: successfully restored your selected backup"
   exit 0
