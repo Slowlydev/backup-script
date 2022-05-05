@@ -22,7 +22,7 @@ else
 fi
 
 # welcome message
-echo -e "\n Welcome to the backup setup \n"
+echo "\n Welcome to the backup setup \n"
 
 # get and save directory for backups
 echo "Please enter the directory where u want to store your compressed backups"
