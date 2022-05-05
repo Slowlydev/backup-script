@@ -1,6 +1,8 @@
 #!/bin/bash
 # backup setup script
 
+#TODO: implement safty checks for direcorys
+
 # sets key $1 with value $2 in config file
 storeToConfig() {
   sed -i '' "s/\(${1} *= *\).*/\1${2//\//\\/}/" backup.config
@@ -27,22 +29,12 @@ echo "\n Welcome to the backup setup \n"
 # get and save directory for backups
 echo "Please enter the directory where u want to store your compressed backups"
 read -p "Backup directory: " backupDirectory
-# a lovely check for your sanity
-if [[ ! -d ${backupDirectory} ]]; then
-  echo "error: the backup directory you provided does not exists"
-  exit 1
-fi
-storeToConfig "backupDirectory" $backupDirectory
+storeToConfig "backupDirectory" ${backupDirectory}
 
 # get and save directory to backup
 echo "Please enter the directory u want to backup"
 read -p "Directory to backup: " targetDirectory
-# another lovely check for your sanity
-if [[ ! -d ${targetDirectory} ]]; then
-  echo "error: the target directory you provided does not exists"
-  exit 1
-fi
-storeToConfig "targetDirectory" $targetDirectory
+storeToConfig "targetDirectory" ${targetDirectory}
 
 # Ask for cronjob setup
 read -p "prompt: would you like to run your backups automatically daily with a cronjob? " cronjobAnswer
