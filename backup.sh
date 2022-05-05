@@ -13,19 +13,24 @@ if [[ ! -d "${targetDirectory}" ]]; then
   echo "fatal: target directory does not exists"
   exit 1
 fi
-echo "info: target directory ${targetDirectory}"
+# echo "debug: target directory ${targetDirectory}"
 
 # check if backup directory exists
 if [[ ! -d "${targetDirectory}" ]]; then
   echo "fatal: target directory does not exists"
   exit 1
 fi
-echo "info: backup directory ${backupDirectory}"
-
-# TODO: remove
-echo "info: timestamp format ${timestampFormat}"
+# echo "debug: backup directory ${backupDirectory}"
 
 targetDirectoryName=$(echo "${targetDirectory}" | sed 's:.*/::')
+
+# check if target directory is empty
+if [[ -z "$(ls -A ${targetDirectory})" ]]; then
+  echo "error: refuse to backup directory which is empty"
+fi
+
+# progress info
+echo "info: backing up..."
 
 # make shadow copy of target directory
 nice -n 19 cp -r "${targetDirectory}" "/tmp/"
@@ -47,7 +52,8 @@ nice -n 19 rm -r "backup"
 nice -n 19 mv "backup.tar.gz" "${timestampFormat}-backup.tar.gz"
 nice -n 19 mv "${timestampFormat}-backup.tar.gz" "${backupDirectory}"
 
-echo "info: done creating backup"
+# finish info
+echo "info: backup successful"
 
 # get back to were we were
 cd "${pwd}"
