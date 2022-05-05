@@ -37,10 +37,17 @@ pwd=$(pwd)
 cd /tmp/
 
 # compress
+echo "info: compressing..."
+
 nice -n 19 tar -czf "backup.tar.gz" "backup"
+
+echo "info : done compressing"
+
 nice -n 19 rm -r "backup"
 nice -n 19 mv "backup.tar.gz" "${timestampFormat}-backup.tar.gz"
 nice -n 19 mv "${timestampFormat}-backup.tar.gz" "${backupDirectory}"
+
+echo "info: done creating backup"
 
 # get back to were we were
 cd "${pwd}"
