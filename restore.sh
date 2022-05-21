@@ -1,7 +1,7 @@
 #!/bin/bash
 # backup restore script
 
-# backup restore script
+# check for backup file
 if [[ -s "backup.config" ]]; then
   source "backup.config"
 else
@@ -10,19 +10,13 @@ else
 fi
 
 # check if target directory exists
-if [[ ! -d "${targetDirectory}" ]]; then
-  echo "fatal: target directory does not exists"
-  exit 1
-fi
-echo "info: target directory ${targetDirectory}"
-
-# check if backup directory exists
 if [[ ! -d "${backupDirectory}" ]]; then
   echo "fatal: backup directory does not exists"
   exit 1
 fi
-echo "info: backup directory ${backupDirectory}"
 
+# log data
+echo "info: target directory ${targetDirectory}"
 echo "info: timestamp format ${timestampFormat}"
 
 # getting all backups available from backup directory
@@ -47,7 +41,17 @@ if [[ ${readConfirmation} =~ ^[Yy]$ ]]; then
   fi
 
   nice -n 19 tar -xf ${selectedBackup}
-  cp -r backup/* ${targetDirectory}
+
+  cd backup
+
+  cat "targets.info" | while read line; do
+    keyWithPath=(${line//=/ })
+
+    nice -n 16 cp -r "${keyWithPath[0]}/"* "${keyWithPath[1]}"
+  done
+
+  cd ..
+
   rm -r backup
 
   cd ${pwd}
