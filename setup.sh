@@ -10,7 +10,7 @@ storeToConfig() {
 
 # store value $1 to target config gile
 storeToTargets() {
-  echo "${1}" >> targets.config
+  echo "${1}" >>targets.config
 }
 
 # store to crontab function
@@ -29,8 +29,8 @@ else
 fi
 
 # check if targets file exists
-if [[ ! -s "backup.config" ]]; then
-  echo "fatal: no config file found"
+if [[ ! -s "targets.config" ]]; then
+  echo "fatal: no targets file found"
   exit 1
 fi
 
@@ -44,9 +44,9 @@ storeToConfig "backupDirectory" ${backupDirectory}
 
 echo "Please enter the directory u want to backup"
 
-while [[ ! ${doneAddingTargets} =~ ^[Nn]$ ]]; do 
+while [[ ! ${doneAddingTargets} =~ ^[Nn]$ ]]; do
   read -p "prompt: enter directory to backup: " targetDirectory
-  
+
   echo "info: writing to targets..."
   storeToTargets ${targetDirectory}
 
