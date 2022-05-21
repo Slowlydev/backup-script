@@ -29,7 +29,7 @@ else
 fi
 
 # check if targets file exists
-if [[ ! -s "targets.config" ]]; then
+if [[ -s "targets.config" ]]; then
   echo "fatal: no targets file found"
   exit 1
 fi
