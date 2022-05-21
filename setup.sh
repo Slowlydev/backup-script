@@ -8,7 +8,7 @@ storeToConfig() {
   sed -i '' "s/\(${1} *= *\).*/\1${2//\//\\/}/" backup.config
 }
 
-# store value $1 to target config gile
+# store value $1 to target config file
 storeToTargets() {
   echo "${1}" >>targets.config
 }

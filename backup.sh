@@ -1,7 +1,7 @@
 #!/bin/bash
 # backup script
 
-# check if backup config file sxists
+# check if backup config file exists
 if [[ -s "backup.config" ]]; then
   source "backup.config"
 else
@@ -21,7 +21,7 @@ if [[ ! -d "${backupDirectory}" ]]; then
   exit 1
 fi
 
-# make dir for shadow copys
+# make dir for shadow copies
 mkdir /tmp/backup
 
 # progress info
@@ -29,9 +29,9 @@ echo "info: backing up..."
 
 cat "targets.config" | while read line; do
 
-  # remove double qoutes
+  # remove double quotes
   tempTargetDirectory=$(sed -e 's/^"//' -e 's/"$//' <<<"$line")
-  # remove single qoutes
+  # remove single quotes
   targetDirectory=$(sed -e "s/^'//" -e "s/'$//" <<<"$tempTargetDirectory")
 
   # get name of target directory
@@ -48,13 +48,13 @@ cat "targets.config" | while read line; do
   # make shadow copy of target directory in temp/backup folder
   nice -n 19 cp -r "${targetDirectory}" "/tmp/backup/"
 
-  # check if targets info file exsists in temp/backup folder
+  # check if targets info file exists in temp/backup folder
   if [[ ! -s "/tmp/backup/targets.info" ]]; then
     echo "info: no targets info file found, creating a new one"
     touch "/tmp/backup/targets.info"
   fi
 
-  # add name of direcoty with path to temp/backup
+  # add name of directory with path to temp/backup
   echo "${targetDirectoryName}=${targetDirectory}" >>"/tmp/backup/targets.info"
 
 done
