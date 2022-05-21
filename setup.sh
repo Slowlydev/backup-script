@@ -8,9 +8,9 @@ storeToConfig() {
   sed -i '' "s/\(${1} *= *\).*/\1${2//\//\\/}/" backup.config
 }
 
-# store value $1 to target config gile
+# store value $1 to target config file
 storeToTargets() {
-  echo "${1}" >> targets.config
+  echo "${1}" >>targets.config
 }
 
 # store to crontab function
@@ -44,9 +44,9 @@ storeToConfig "backupDirectory" ${backupDirectory}
 
 echo "Please enter the directory u want to backup"
 
-while [[ ! ${doneAddingTargets} =~ ^[Nn]$ ]]; do 
+while [[ ! ${doneAddingTargets} =~ ^[Nn]$ ]]; do
   read -p "prompt: enter directory to backup: " targetDirectory
-  
+
   echo "info: writing to targets..."
   storeToTargets ${targetDirectory}
 
