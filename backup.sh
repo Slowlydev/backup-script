@@ -10,7 +10,7 @@ else
 fi
 
 # check if targets file exists
-if [[ ! -s "backup.config" ]]; then
+if [[ ! -s "targets.config" ]]; then
   echo "fatal: no targets file found"
   exit 1
 fi
