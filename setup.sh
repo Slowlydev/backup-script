@@ -8,6 +8,11 @@ storeToConfig() {
   sed -i '' "s/\(${1} *= *\).*/\1${2//\//\\/}/" backup.config
 }
 
+# store value $1 to target config gile
+storeToTargets() {
+  echo "${1}" >> targets.config
+}
+
 # store to crontab function
 storeToCrontab() {
   crontab -l | {
@@ -23,21 +28,33 @@ else
   exit 1
 fi
 
+# check if targets file exists
+if [[ ! -s "backup.config" ]]; then
+  echo "fatal: no config file found"
+  exit 1
+fi
+
 # welcome message
 echo "\n Welcome to the backup setup \n"
 
 # get and save directory for backups
 echo "Please enter the directory where u want to store your compressed backups"
-read -p "Backup directory: " backupDirectory
+read -p "prompt: enter backup directory: " backupDirectory
 storeToConfig "backupDirectory" ${backupDirectory}
 
-# get and save directory to backup
 echo "Please enter the directory u want to backup"
-read -p "Directory to backup: " targetDirectory
-storeToConfig "targetDirectory" ${targetDirectory}
+
+while [[ ! ${doneAddingTargets} =~ ^[Nn]$ ]]; do 
+  read -p "prompt: enter directory to backup: " targetDirectory
+  
+  echo "info: writing to targets..."
+  storeToTargets ${targetDirectory}
+
+  read -p "prompt: do u want to add another one? (Y/n): " doneAddingTargets
+done
 
 # Ask for cronjob setup
-read -p "prompt: would you like to run your backups automatically daily with a cronjob? " cronjobAnswer
+read -p "prompt: would you like to run your backups automatically daily with a cronjob? (Y/n): " cronjobAnswer
 
 # Check for answer
 if [[ $cronjobAnswer =~ ^[Yy]$ ]]; then
