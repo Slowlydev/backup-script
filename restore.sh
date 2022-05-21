@@ -48,8 +48,9 @@ if [[ ${readConfirmation} =~ ^[Yy]$ ]]; then
     keyWithPath=(${line//=/ })
 
     if [[ ! -d "${keyWithPath[1]}" ]]; then
-      mkdir "${keyWithPath[1]}"
+      mkdir -p "${keyWithPath[1]}"
     fi
+
     nice -n 16 cp -r "${keyWithPath[0]}/"* "${keyWithPath[1]}"
   done
 
