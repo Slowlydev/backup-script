@@ -16,7 +16,7 @@ if [[ ! -d "${backupDirectory}" ]]; then
 fi
 
 # log data
-echo "info: target directory ${backupDirectory}"
+echo "info: backup directory ${backupDirectory}"
 echo "info: timestamp format ${timestampFormat}"
 
 # getting all backups available from backup directory
